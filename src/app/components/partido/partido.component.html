@@ -1,6 +1,14 @@
 <div style="text-align: center;">
     <h1> Partidos de hoy!</h1>
     <span> {{partido.equipoLocal}} </span>
-    <span> vs </span>
+    <button (click)="golLocal()">+</button>
+    <span style="display: inline-block; min-width: 30px; padding: 4px; border: 1px solid #000; border-radius: 4px; margin: 0 8px;">
+        {{partido.golesLocal}}
+    </span>
+    <span> - </span>
+    <span style="display: inline-block; min-width: 30px; padding: 4px; border: 1px solid #000; border-radius: 4px; margin: 0 8px;">
+        {{partido.golesVisitante}}
+    </span>
+    <button (click)="golVisitante()">+</button>
     <span> {{partido.equipoVisitante}} </span>
 </div>
