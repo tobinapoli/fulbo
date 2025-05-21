@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+    body {
+  background-color: #6B8E23; /* Un verde oliva claro, puedes ajustarlo */
+  color: #f0f0f0; /* Un color de texto claro para contraste */
+  font-family: sans-serif; /* Una fuente base simple */
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos para el contenedor principal de la aplicación si tienes uno */
+app-root > div, app-root > router-outlet + * {
+  padding: 20px;
+}
+
+/* Estilos para la barra de navegación */
+nav {
+  background-color: #556B2F; /* Un verde un poco más oscuro para la nav */
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+nav a {
+  color: #f0f0f0;
+  text-decoration: none;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+nav a:hover, nav a.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Estilos generales para tablas (puedes refinar esto en los componentes) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #8FBC8F; /* Verde mar claro para el fondo de la tabla */
+  color: #2F4F4F; /* Gris pizarra oscuro para el texto de la tabla */
+}
+
+th, td {
+  border: 1px solid #556B2F; /* Borde con el verde oscuro de la nav */
+  padding: 8px;
+  text-align: left;
+}
+
+thead {
+  background-color: #556B2F; /* Verde oscuro para la cabecera de la tabla */
+  color: #f0f0f0; /* Texto claro para la cabecera */
+}
+
+/* Estilos para botones */
+button {
+  background-color: #556B2F; /* Verde oscuro */
+  color: #f0f0f0; /* Texto claro */
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #6B8E23; /* Verde oliva claro al pasar el mouse */
+}
+
+/* Estilos para títulos */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff; /* Títulos en blanco para destacar sobre el fondo verde */
+  margin-top: 0;
+}

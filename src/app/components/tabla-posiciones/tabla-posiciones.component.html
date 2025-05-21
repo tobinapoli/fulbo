@@ -1,1 +1,33 @@
-<p>tabla-posiciones works!</p>
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+    <div class="tabla-container">
+        <h2>Tabla de Posiciones</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Equipo</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let posicion of posiciones">
+                    <td>{{ posicion.equipo }}</td>
+                    <td>{{ posicion.puntos }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="resetearTabla()">Resetear Puntos</button>
+    </div>
+
+    <div class="sumar-puntos-container" style="margin-top: 20px;">
+        <h3>Sumar Puntos a un Equipo</h3>
+        <div>
+            <label for="equipoInput">Equipo: </label>
+            <input type="text" id="equipoInput" [(ngModel)]="equipoParaSumarPuntos" placeholder="Nombre del equipo">
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="puntosInput">Puntos: </label>
+            <input type="number" id="puntosInput" [(ngModel)]="cantidadPuntos">
+        </div>
+        <button (click)="aplicarPuntosDesdeInput()" style="margin-top: 10px;">Aplicar Puntos</button>
+    </div>
+</div>

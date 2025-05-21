@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido del componente horizontalmente */
+  width: 100%;
+  padding-top: 20px; /* Añade un poco de espacio arriba */
+}
+
+h2 {
+  text-align: center;
+  color: #ffffff; /* Asegúrate de que el título sea visible si el fondo global es oscuro */
+}
+
+table {
+  width: auto; /* Permite que la tabla tome el ancho de su contenido */
+  min-width: 500px; /* Un ancho mínimo para que no se vea muy angosta */
+  max-width: 800px; /* Un ancho máximo para que no se estire demasiado */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /* Los estilos de borde, color, etc., se heredan de styles.css o puedes definirlos aquí */
+}
+
+/* Puedes mantener los estilos de th, td, thead de styles.css
+   o personalizarlos aquí si es necesario */
+
+button {
+  /* Los estilos del botón se heredan de styles.css
+     o puedes personalizarlos aquí */
+  margin-top: 10px;
+}
