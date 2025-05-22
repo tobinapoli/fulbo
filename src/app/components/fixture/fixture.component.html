@@ -1,0 +1,40 @@
+<!-- Sección para el Fixture estilo Promiedos -->
+<div class="fixture-promiedos-container" *ngIf="fixtureCompleto.length > 0 && datosFechaSeleccionada">
+    <div class="header-fixture">
+        <h2>TEMPORADA</h2> <!-- O el título que prefieras -->
+        <div class="navegacion-fecha">
+            <button (click)="fechaAnterior()" [disabled]="fechaActualFixtureNumero <= 1">&lt;</button>
+            <span>FECHA {{ datosFechaSeleccionada.numero }}</span>
+            <button (click)="siguienteFecha()" [disabled]="fechaActualFixtureNumero >= fixtureCompleto.length">&gt;</button>
+        </div>
+    </div>
+
+    <div class="partidos-dia-container">
+        <!-- Partidos Zona A -->
+        <h4 class="titulo-zona-fixture" *ngIf="datosFechaSeleccionada.partidosZonaA && datosFechaSeleccionada.partidosZonaA.length > 0">Zona A</h4>
+        <div class="partido-promiedos" *ngFor="let partido of datosFechaSeleccionada.partidosZonaA">
+            <span class="estado-partido">Final</span> <!-- Asumiendo que todos son 'Final' por ahora -->
+            <span class="equipo-local">{{ partido.local }}</span>
+            <span class="resultado">vs</span> <!-- Podrías poner resultados reales aquí si los tuvieras -->
+            <span class="equipo-visitante">{{ partido.visitante }}</span>
+        </div>
+
+        <!-- Partidos Zona B -->
+        <h4 class="titulo-zona-fixture" *ngIf="datosFechaSeleccionada.partidosZonaB && datosFechaSeleccionada.partidosZonaB.length > 0">Zona B</h4>
+        <div class="partido-promiedos" *ngFor="let partido of datosFechaSeleccionada.partidosZonaB">
+            <span class="estado-partido">Final</span>
+            <span class="equipo-local">{{ partido.local }}</span>
+            <span class="resultado">vs</span>
+            <span class="equipo-visitante">{{ partido.visitante }}</span>
+        </div>
+
+        <!-- Partido Interzonal -->
+        <h4 class="titulo-zona-fixture" *ngIf="datosFechaSeleccionada.partidoInterzonal">Interzonal</h4>
+        <div class="partido-promiedos interzonal-highlight" *ngIf="datosFechaSeleccionada.partidoInterzonal">
+            <span class="estado-partido">Final</span>
+            <span class="equipo-local">{{ datosFechaSeleccionada.partidoInterzonal.local }}</span>
+            <span class="resultado">vs</span>
+            <span class="equipo-visitante">{{ datosFechaSeleccionada.partidoInterzonal.visitante }}</span>
+        </div>
+    </div>
+</div>

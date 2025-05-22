@@ -1,0 +1,99 @@
+/* Estilos para el Fixture estilo Promiedos */
+.fixture-promiedos-container {
+  width: 90%;
+  max-width: 400px; /* Ancho similar al de la imagen de referencia */
+  background-color: #2E343A; /* Color de fondo oscuro del contenedor del fixture */
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  color: #fff; /* Texto blanco por defecto dentro del fixture */
+}
+
+.header-fixture {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.header-fixture h2 {
+  font-size: 1.5em;
+  margin: 0 0 10px 0;
+  color: #fff;
+}
+
+.navegacion-fecha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1D2024; /* Fondo para la barra de navegación de fecha */
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 1.1em;
+}
+
+.navegacion-fecha button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.navegacion-fecha button:disabled {
+  color: #666;
+  cursor: not-allowed;
+}
+
+.partidos-dia-container {
+  /* No necesita estilos especiales si los partidos se apilan verticalmente */
+}
+
+.titulo-zona-fixture {
+  color: #FFD700; /* Color dorado para los títulos de zona, por ejemplo */
+  text-align: center;
+  padding: 8px 0;
+  margin-top: 15px; /* Espacio antes del título de zona */
+  margin-bottom: 5px; /* Espacio después del título de zona */
+  font-size: 1em;
+  font-weight: bold;
+  border-top: 1px solid #4A5056; /* Línea separadora arriba */
+  border-bottom: 1px solid #4A5056; /* Línea separadora abajo */
+}
+
+.titulo-zona-fixture:first-of-type {
+  margin-top: 5px; /* Menos margen superior para el primer título de zona */
+  border-top: none; /* Sin borde superior para el primer título */
+}
+
+.partido-promiedos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5px;
+  border-bottom: 1px solid #4A5056; /* Separador entre partidos */
+  font-size: 0.9em;
+}
+
+.partido-promiedos:last-child {
+  border-bottom: none;
+}
+
+.estado-partido {
+  flex-basis: 15%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.equipo-local, .equipo-visitante {
+  flex-basis: 35%; /* Ajusta según sea necesario */
+  text-align: center; /* O left/right si prefieres alinear los nombres */
+}
+
+.resultado {
+  flex-basis: 15%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.interzonal-highlight {
+  background-color: #3a3f44; /* Un ligero destaque para el interzonal */
+}
