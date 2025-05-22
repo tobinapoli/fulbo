@@ -99,6 +99,26 @@ th, td {
   text-align: left;
 }
 
+td.clasificado {
+  background-color: #2196F3; /* Un azul material design */
+  color: white; /* Texto blanco para contraste con el fondo azul */
+  font-weight: bold;
+}
+
+/* Ajustes para que el texto de las celdas de la tabla esté centrado */
+th {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+/* Específicamente para la celda del nombre del equipo, si se prefiere alineado a la izquierda */
+td:nth-child(2) { /* Asumiendo que el nombre del equipo es la segunda columna */
+  text-align: left;
+}
+
 thead {
   background-color: #2e7d32; /* Verde más oscuro para encabezados */
   color: white;

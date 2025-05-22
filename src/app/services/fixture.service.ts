@@ -16,26 +16,21 @@ export class FixtureService {
    */
   private generarPartidosIntrazonaYEquipoLibre(
     equiposZona: string[], 
-    fechaIndex: number, 
-    fechaNumeroGlobal: number,
+    fechaIndex: number, // 0-based index of the current round for rotation purposes
+    fechaNumeroGlobal: number, // 1-based actual round number for display/simulation
     fechaHastaDondeSeJugo: number
   ): ResultadoFechaZona {
     if (equiposZona.length % 2 === 0) {
       throw new Error('Este método espera un número impar de equipos para determinar un equipo libre.');
     }
 
-    const equiposConBye = [...equiposZona, '__BYE__']; // Añadir un equipo "descanso" temporal
+    const equiposConBye = [...equiposZona, '__BYE__'];
     const n = equiposConBye.length;
     const partidosDeEstaFecha: PartidoFixture[] = [];
     let equipoLibreReal: string = '';
 
-    // Aplicar la rotación correspondiente a la fecha actual (fechaIndex)
-    // El primer equipo (equiposConBye[0]) se mantiene fijo.
-    // Los demás rotan. Para la fecha 0, no hay rotación previa.
-    // Para fecha 1, el último se mueve a la posición 1, y los demás se desplazan.
-    // Esto es equivalente a rotar la sublista equiposConBye.slice(1)
     const elementosRotativos = equiposConBye.slice(1);
-    for (let i = 0; i < fechaIndex; i++) {
+    for (let k = 0; k < fechaIndex; k++) { // k instead of i to avoid conflict if this code is nested
       const ultimo = elementosRotativos.pop();
       if (ultimo) {
         elementosRotativos.unshift(ultimo);
@@ -43,31 +38,38 @@ export class FixtureService {
     }
     const equiposRotadosEstaFecha = [equiposConBye[0], ...elementosRotativos];
 
-    for (let i = 0; i < n / 2; i++) {
-      const local = equiposRotadosEstaFecha[i];
-      const visitante = equiposRotadosEstaFecha[n - 1 - i];
+    for (let j = 0; j < n / 2; j++) { // j instead of i
+      let localEquipo = equiposRotadosEstaFecha[j];
+      let visitanteEquipo = equiposRotadosEstaFecha[n - 1 - j];
 
-      if (local === '__BYE__') {
-        equipoLibreReal = visitante;
-      } else if (visitante === '__BYE__') {
-        equipoLibreReal = local;
+      // Alternar local/visitante para el equipo fijo (j=0) en fechas impares (fechaIndex)
+      // fechaIndex es 0-based, así que las fechas "impares" (1, 3, 5...) tienen fechaIndex par (0, 2, 4...)
+      // No, si fechaIndex es 0, 2, 4 (rondas 1, 3, 5) -> fijo es local
+      // Si fechaIndex es 1, 3, 5 (rondas 2, 4, 6) -> fijo es visitante
+      if (j === 0 && fechaIndex % 2 !== 0) { 
+        [localEquipo, visitanteEquipo] = [visitanteEquipo, localEquipo];
+      }
+
+      if (localEquipo === '__BYE__') {
+        equipoLibreReal = visitanteEquipo;
+      } else if (visitanteEquipo === '__BYE__') {
+        equipoLibreReal = localEquipo;
       } else {
-        // Simular resultados si la fecha ya se jugó
         let golesLocal: number | null = null;
         let golesVisitante: number | null = null;
         let jugado = false;
 
         if (fechaNumeroGlobal <= fechaHastaDondeSeJugo) {
           jugado = true;
-          golesLocal = Math.floor(Math.random() * 4); // Resultado aleatorio 0-3
-          golesVisitante = Math.floor(Math.random() * 4); // Resultado aleatorio 0-3
+          golesLocal = Math.floor(Math.random() * 4);
+          golesVisitante = Math.floor(Math.random() * 4);
         }
-        partidosDeEstaFecha.push({ local, visitante, golesLocal, golesVisitante, jugado });
+        partidosDeEstaFecha.push({ local: localEquipo, visitante: visitanteEquipo, golesLocal, golesVisitante, jugado });
       }
     }
 
     return {
-      fechaNumero: fechaIndex + 1,
+      fechaNumero: fechaNumeroGlobal, // Usar fechaNumeroGlobal que es 1-based
       partidosIntrazona: partidosDeEstaFecha,
       equipoLibreParaInterzonal: equipoLibreReal
     };
@@ -83,21 +85,14 @@ export class FixtureService {
     }
 
     const fixtureCompleto: FechaTorneoCompleta[] = [];
-    const numeroDeFechas = 15; // Dado que son 15 equipos por zona, y el que queda libre juega interzonal.
+    const numeroDeFechas = 15;
 
     for (let i = 0; i < numeroDeFechas; i++) {
-      const fechaNumeroActual = i + 1;
-      // Generar partidos y libre para Zona A para la fecha 'i'
-      const resultadoZonaA = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaA], i, fechaNumeroActual, fechaHastaDondeSeJugo);
-      
-      // Generar partidos y libre para Zona B para la fecha 'i'
-      // IMPORTANTE: Para que los "libres" se crucen correctamente y no se repitan los interzonales,
-      // la "rotación" o el orden de los equipos de la Zona B debe ser diferente o estar desfasado
-      // respecto a la Zona A. Una forma simple es invertir el orden inicial de la Zona B o aplicar un offset.
-      // Aquí, para simplificar, usamos la misma lógica de rotación pero con su propia lista.
-      // Una mejora sería asegurar que los cruces interzonales sean variados si es un requisito.
-      // Por ahora, el 'equipoLibre' de cada zona se determinará por la misma lógica de rotación interna.
-      const resultadoZonaB = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaB], i, fechaNumeroActual, fechaHastaDondeSeJugo);
+      const fechaNumeroActual = i + 1; // 1-based
+      const fechaIndex = i; // 0-based for rotation logic
+
+      const resultadoZonaA = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaA], fechaIndex, fechaNumeroActual, fechaHastaDondeSeJugo);
+      const resultadoZonaB = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaB], fechaIndex, fechaNumeroActual, fechaHastaDondeSeJugo);
 
       let golesLocalInterzonal: number | null = null;
       let golesVisitanteInterzonal: number | null = null;
@@ -109,9 +104,18 @@ export class FixtureService {
         golesVisitanteInterzonal = Math.floor(Math.random() * 4);
       }
 
+      let localInterzonalEquipo = resultadoZonaA.equipoLibreParaInterzonal;
+      let visitanteInterzonalEquipo = resultadoZonaB.equipoLibreParaInterzonal;
+
+      // Alternar local/visitante para el partido interzonal basado en fechaNumeroActual (1-based)
+      // Si fechaNumeroActual es par, el equipo de Zona B (visitante original) juega de local.
+      if (fechaNumeroActual % 2 === 0) {
+        [localInterzonalEquipo, visitanteInterzonalEquipo] = [visitanteInterzonalEquipo, localInterzonalEquipo];
+      }
+
       const partidoInterzonal: PartidoFixture = {
-        local: resultadoZonaA.equipoLibreParaInterzonal,
-        visitante: resultadoZonaB.equipoLibreParaInterzonal,
+        local: localInterzonalEquipo,
+        visitante: visitanteInterzonalEquipo,
         golesLocal: golesLocalInterzonal,
         golesVisitante: golesVisitanteInterzonal,
         jugado: jugadoInterzonal
