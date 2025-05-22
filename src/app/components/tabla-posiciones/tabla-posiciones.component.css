@@ -134,6 +134,23 @@ thead {
   /* No necesita estilos especiales si los partidos se apilan verticalmente */
 }
 
+.titulo-zona-fixture {
+  color: #FFD700; /* Color dorado para los títulos de zona, por ejemplo */
+  text-align: center;
+  padding: 8px 0;
+  margin-top: 15px; /* Espacio antes del título de zona */
+  margin-bottom: 5px; /* Espacio después del título de zona */
+  font-size: 1em;
+  font-weight: bold;
+  border-top: 1px solid #4A5056; /* Línea separadora arriba */
+  border-bottom: 1px solid #4A5056; /* Línea separadora abajo */
+}
+
+.titulo-zona-fixture:first-of-type {
+  margin-top: 5px; /* Menos margen superior para el primer título de zona */
+  border-top: none; /* Sin borde superior para el primer título */
+}
+
 .partido-promiedos {
   display: flex;
   justify-content: space-between;
