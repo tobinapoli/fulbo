@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let pos of posicionesZonaA">
-                            <td>{{ pos.equipo }}</td>
+                            <td>{{ pos.equipo.nombre }}</td>
                             <td>{{ pos.puntos }}</td>
                         </tr>
                     </tbody>
@@ -42,7 +42,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let pos of posicionesZonaB">
-                            <td>{{ pos.equipo }}</td>
+                            <td>{{ pos.equipo.nombre }}</td>
                             <td>{{ pos.puntos }}</td>
                         </tr>
                     </tbody>

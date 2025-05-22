@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { EQUIPOS_ZONA_A, EQUIPOS_ZONA_B } from '../data/equipos.data'; // <--- IMPORTAR CONSTANTES (sin .ts)
+import { EQUIPOS_ZONA_A, EQUIPOS_ZONA_B } from '../data/equipos.data';
+import { Equipo } from '../models/equipo.model'; // <--- IMPORTAR Equipo
 
 export interface Posicion {
-  equipo: string;
+  equipo: Equipo; // <--- Cambiado de string a Equipo
   puntos: number;
   zona: 'A' | 'B';
 }
@@ -11,10 +12,6 @@ export interface Posicion {
   providedIn: 'root'
 })
 export class TablaPosicionesService {
-  // Ya no se definen aquí, se importan
-  // private equiposZonaA: string[] = [ ... ];
-  // private equiposZonaB: string[] = [ ... ];
-
   private _posiciones: Posicion[] = [];
 
   constructor() {
@@ -23,11 +20,11 @@ export class TablaPosicionesService {
 
   private iniciarTablaPosiciones(): void {
     this._posiciones = [];
-    EQUIPOS_ZONA_A.forEach(equipo => { // <--- Usar constante importada
-      this._posiciones.push({ equipo, puntos: 0, zona: 'A' });
+    EQUIPOS_ZONA_A.forEach(equipoObj => { // <--- equipoObj es ahora un objeto Equipo
+      this._posiciones.push({ equipo: equipoObj, puntos: 0, zona: 'A' });
     });
-    EQUIPOS_ZONA_B.forEach(equipo => { // <--- Usar constante importada
-      this._posiciones.push({ equipo, puntos: 0, zona: 'B' });
+    EQUIPOS_ZONA_B.forEach(equipoObj => { // <--- equipoObj es ahora un objeto Equipo
+      this._posiciones.push({ equipo: equipoObj, puntos: 0, zona: 'B' });
     });
     this.ordenarTabla();
   }
@@ -37,7 +34,7 @@ export class TablaPosicionesService {
       if (b.puntos !== a.puntos) {
         return b.puntos - a.puntos;
       }
-      return a.equipo.localeCompare(b.equipo);
+      return a.equipo.nombre.localeCompare(b.equipo.nombre); // <--- Comparar por nombre del objeto Equipo
     });
   }
 
@@ -49,13 +46,13 @@ export class TablaPosicionesService {
     };
   }
 
-  sumarPuntos(equipo: string, puntos: number): void {
-    const posicion = this._posiciones.find(pos => pos.equipo.toLowerCase() === equipo.toLowerCase());
+  sumarPuntos(equipoNombre: string, puntos: number): void { // <--- Renombrado parámetro para claridad
+    const posicion = this._posiciones.find(pos => pos.equipo.nombre.toLowerCase() === equipoNombre.toLowerCase()); // <--- Buscar por nombre del objeto Equipo
     if (posicion) {
       posicion.puntos += puntos;
       this.ordenarTabla(); 
     } else {
-      console.warn(`TablaPosicionesService: Equipo "${equipo}" no encontrado para sumar puntos.`);
+      console.warn(`TablaPosicionesService: Equipo "${equipoNombre}" no encontrado para sumar puntos.`);
     }
   }
 
@@ -65,6 +62,9 @@ export class TablaPosicionesService {
   }
 
   getAllNombresEquipos(): string[] {
-    return [...EQUIPOS_ZONA_A, ...EQUIPOS_ZONA_B].sort((a,b) => a.localeCompare(b)); // <--- Usar constantes importadas
+    // Mapear los objetos Equipo a sus nombres
+    const nombresZonaA = EQUIPOS_ZONA_A.map(equipo => equipo.nombre);
+    const nombresZonaB = EQUIPOS_ZONA_B.map(equipo => equipo.nombre);
+    return [...nombresZonaA, ...nombresZonaB].sort((a,b) => a.localeCompare(b));
   }
 }
