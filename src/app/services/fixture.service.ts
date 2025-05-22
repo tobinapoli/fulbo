@@ -14,7 +14,12 @@ export class FixtureService {
    * determinando también qué equipo queda libre.
    * Este es un paso del algoritmo round-robin para una sola fecha.
    */
-  private generarPartidosIntrazonaYEquipoLibre(equiposZona: string[], fechaIndex: number): ResultadoFechaZona {
+  private generarPartidosIntrazonaYEquipoLibre(
+    equiposZona: string[], 
+    fechaIndex: number, 
+    fechaNumeroGlobal: number,
+    fechaHastaDondeSeJugo: number
+  ): ResultadoFechaZona {
     if (equiposZona.length % 2 === 0) {
       throw new Error('Este método espera un número impar de equipos para determinar un equipo libre.');
     }
@@ -47,7 +52,17 @@ export class FixtureService {
       } else if (visitante === '__BYE__') {
         equipoLibreReal = local;
       } else {
-        partidosDeEstaFecha.push({ local, visitante });
+        // Simular resultados si la fecha ya se jugó
+        let golesLocal: number | null = null;
+        let golesVisitante: number | null = null;
+        let jugado = false;
+
+        if (fechaNumeroGlobal <= fechaHastaDondeSeJugo) {
+          jugado = true;
+          golesLocal = Math.floor(Math.random() * 4); // Resultado aleatorio 0-3
+          golesVisitante = Math.floor(Math.random() * 4); // Resultado aleatorio 0-3
+        }
+        partidosDeEstaFecha.push({ local, visitante, golesLocal, golesVisitante, jugado });
       }
     }
 
@@ -58,7 +73,7 @@ export class FixtureService {
     };
   }
 
-  public generarFixtureCompletoConInterzonales(): FechaTorneoCompleta[] {
+  public generarFixtureCompletoConInterzonales(fechaHastaDondeSeJugo: number): FechaTorneoCompleta[] {
     const nombresEquiposZonaA = this.tablaPosicionesService.getNombresEquiposPorZona('A');
     const nombresEquiposZonaB = this.tablaPosicionesService.getNombresEquiposPorZona('B');
 
@@ -71,8 +86,9 @@ export class FixtureService {
     const numeroDeFechas = 15; // Dado que son 15 equipos por zona, y el que queda libre juega interzonal.
 
     for (let i = 0; i < numeroDeFechas; i++) {
+      const fechaNumeroActual = i + 1;
       // Generar partidos y libre para Zona A para la fecha 'i'
-      const resultadoZonaA = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaA], i);
+      const resultadoZonaA = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaA], i, fechaNumeroActual, fechaHastaDondeSeJugo);
       
       // Generar partidos y libre para Zona B para la fecha 'i'
       // IMPORTANTE: Para que los "libres" se crucen correctamente y no se repitan los interzonales,
@@ -81,15 +97,28 @@ export class FixtureService {
       // Aquí, para simplificar, usamos la misma lógica de rotación pero con su propia lista.
       // Una mejora sería asegurar que los cruces interzonales sean variados si es un requisito.
       // Por ahora, el 'equipoLibre' de cada zona se determinará por la misma lógica de rotación interna.
-      const resultadoZonaB = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaB], i);
+      const resultadoZonaB = this.generarPartidosIntrazonaYEquipoLibre([...nombresEquiposZonaB], i, fechaNumeroActual, fechaHastaDondeSeJugo);
+
+      let golesLocalInterzonal: number | null = null;
+      let golesVisitanteInterzonal: number | null = null;
+      let jugadoInterzonal = false;
+
+      if (fechaNumeroActual <= fechaHastaDondeSeJugo) {
+        jugadoInterzonal = true;
+        golesLocalInterzonal = Math.floor(Math.random() * 4);
+        golesVisitanteInterzonal = Math.floor(Math.random() * 4);
+      }
 
       const partidoInterzonal: PartidoFixture = {
         local: resultadoZonaA.equipoLibreParaInterzonal,
-        visitante: resultadoZonaB.equipoLibreParaInterzonal
+        visitante: resultadoZonaB.equipoLibreParaInterzonal,
+        golesLocal: golesLocalInterzonal,
+        golesVisitante: golesVisitanteInterzonal,
+        jugado: jugadoInterzonal
       };
 
       fixtureCompleto.push({
-        numero: i + 1,
+        numero: fechaNumeroActual,
         partidosZonaA: resultadoZonaA.partidosIntrazona,
         partidosZonaB: resultadoZonaB.partidosIntrazona,
         partidoInterzonal: partidoInterzonal

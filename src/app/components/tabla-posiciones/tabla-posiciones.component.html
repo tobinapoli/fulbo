@@ -1,57 +1,64 @@
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-    <div class="tabla-container">
-        <h2>Tabla de Posiciones</h2>
+    <div class="pagina-container">
+        <div class="tabla-container">
+            <h2>Tabla de Posiciones</h2>
 
-        <div class="controles">
-            <select [(ngModel)]="equipoParaSumarPuntos">
-                <option value="" disabled>Selecciona un equipo</option>
-                <option *ngFor="let equipo of equiposArgentinosDisponibles" [value]="equipo">{{ equipo }}</option>
-            </select>
-            <input type="number" [(ngModel)]="cantidadPuntos" placeholder="Puntos">
-            <button (click)="aplicarPuntosDesdeInput()">Sumar Puntos</button>
-            <button (click)="resetearTabla()">Resetear Tabla</button>
-        </div>
-
-        <div class="zonas-container">
-            <div class="zona">
-                <h3>Zona A</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Equipo</th>
-                            <th>Puntos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let pos of posicionesZonaA">
-                            <td>{{ pos.equipo.nombre }}</td>
-                            <td>{{ pos.puntos }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="controles">
+                <select [(ngModel)]="equipoParaSumarPuntos">
+                    <option value="" disabled>Selecciona un equipo</option>
+                    <option *ngFor="let equipo of equiposArgentinosDisponibles" [value]="equipo">{{ equipo }}</option>
+                </select>
+                <input type="number" [(ngModel)]="cantidadPuntos" placeholder="Puntos">
+                <button (click)="aplicarPuntosDesdeInput()">Sumar Puntos</button>
+                <button (click)="resetearTabla()">Resetear Tabla</button>
             </div>
 
-            <div class="zona">
-                <h3>Zona B</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Equipo</th>
-                            <th>Puntos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let pos of posicionesZonaB">
-                            <td>{{ pos.equipo.nombre }}</td>
-                            <td>{{ pos.puntos }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="controles-simulacion" style="margin-top: 10px; margin-bottom: 20px;">
+                <label for="fechaSimulacion" style="margin-right: 5px;">Simular hasta fecha:</label>
+                <input type="number" id="fechaSimulacion" [(ngModel)]="fechaHastaDondeSeJugo" min="0" [max]="totalFechasFixture" style="width: 60px; margin-right: 10px;">
+                <button (click)="actualizarSimulacionPorFecha()">Actualizar Simulación</button>
+            </div>
+
+            <div class="zonas-container">
+                <div class="zona">
+                    <h3>Zona A</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pos of posicionesZonaA">
+                                <td>{{ pos.equipo.nombre }}</td>
+                                <td>{{ pos.puntos }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="zona">
+                    <h3>Zona B</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pos of posicionesZonaB">
+                                <td>{{ pos.equipo.nombre }}</td>
+                                <td>{{ pos.puntos }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <!-- Mover el FixtureComponent para que sea hermano del tabla-container -->
+        <app-fixture [fixtureCompleto]="fixtureParaMostrar" class="fixture-column"></app-fixture>
     </div>
-
-    <!-- Usar el nuevo FixtureComponent -->
-    <app-fixture></app-fixture>
-
 </div>

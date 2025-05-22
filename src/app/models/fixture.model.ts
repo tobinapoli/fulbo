@@ -1,6 +1,9 @@
 export interface PartidoFixture {
   local: string;
   visitante: string;
+  golesLocal?: number | null;
+  golesVisitante?: number | null;
+  jugado?: boolean;
   // Podrías añadir 'tipo?: "intrazonalA" | "intrazonalB" | "interzonal";' si necesitas diferenciarlo fácilmente
 }
 

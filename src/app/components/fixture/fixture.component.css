@@ -94,6 +94,11 @@
   font-weight: bold;
 }
 
+.resultado.con-resultado {
+  /* Styles for results when the match has been played */
+  /* e.g., different color or background if needed */
+}
+
 .interzonal-highlight {
   background-color: #3a3f44; /* Un ligero destaque para el interzonal */
 }

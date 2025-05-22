@@ -9,6 +9,17 @@
   min-height: 100vh;
 }
 
+.pagina-container {
+  display: flex;
+  flex-direction: row; /* Alinea los hijos (tabla y fixture) en una fila */
+  justify-content: center; /* Centra los elementos si hay espacio extra */
+  align-items: flex-start; /* Alinea los elementos al inicio del eje transversal */
+  width: 100%;
+  max-width: 1200px; /* O un ancho máximo que consideres adecuado para la página */
+  gap: 20px; /* Espacio entre el contenedor de la tabla y el fixture */
+  padding: 20px; /* Espacio alrededor del contenedor de la página */
+}
+
 h2, h3 {
   text-align: center;
   color: #ffffff; 
@@ -18,9 +29,17 @@ h2, h3 {
   background-color: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente para las tablas */
   padding: 15px;
   border-radius: 8px;
-  margin-bottom: 20px;
-  width: 90%;
-  max-width: 800px; /* Ajusta según necesidad */
+  /* margin-bottom: 20px; Ya no es necesario si están lado a lado */
+  width: 100%; /* El contenedor de la tabla tomará el espacio disponible en su columna */
+  /* max-width: 800px; Se puede ajustar o quitar si .pagina-container maneja el ancho total */
+  flex: 2; /* Le da más espacio al contenedor de la tabla en relación al fixture */
+}
+
+.fixture-column { /* Estilos para el app-fixture cuando está en la columna */
+  flex: 1; /* Le da menos espacio al fixture en relación al contenedor de la tabla */
+  width: 100%; /* El fixture tomará el espacio disponible en su columna */
+  max-width: 450px; /* Un ancho máximo para el fixture, similar al que ya tenías */
+  /* Asegúrate de que .fixture-promiedos-container dentro de FixtureComponent no tenga un margin-top que lo empuje hacia abajo innecesariamente cuando está al lado */
 }
 
 .controles {
