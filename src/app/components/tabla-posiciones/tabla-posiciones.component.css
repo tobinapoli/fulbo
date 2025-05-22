@@ -4,27 +4,188 @@
   align-items: center; /* Centra el contenido del componente horizontalmente */
   width: 100%;
   padding-top: 20px; /* Añade un poco de espacio arriba */
+  background-color: #4CAF50; /* Fondo verde similar a la imagen */
+  color: #ffffff; /* Texto blanco para contraste */
+  min-height: 100vh;
 }
 
-h2 {
+h2, h3 {
   text-align: center;
-  color: #ffffff; /* Asegúrate de que el título sea visible si el fondo global es oscuro */
+  color: #ffffff; 
+}
+
+.tabla-container {
+  background-color: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente para las tablas */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 800px; /* Ajusta según necesidad */
+}
+
+.controles {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controles select, .controles input, .controles button {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.controles button {
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+}
+
+controles button:hover {
+  background-color: #555;
+}
+
+.zonas-container {
+    display: flex;
+    flex-direction: column; /* Zona A arriba, Zona B abajo */
+    align-items: center; /* Centra las tablas de zona */
+    width: 100%;
+}
+
+.zona {
+    width: 90%; /* O el ancho que prefieras para cada tabla de zona */
+    max-width: 500px; /* Máximo ancho para las tablas de zona */
+    margin-bottom: 20px;
+}
+
+.zona h3 {
+    background-color: rgba(0,0,0,0.5);
+    padding: 8px;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
 }
 
 table {
-  width: auto; /* Permite que la tabla tome el ancho de su contenido */
-  min-width: 500px; /* Un ancho mínimo para que no se vea muy angosta */
-  max-width: 800px; /* Un ancho máximo para que no se estire demasiado */
-  margin-top: 20px;
-  margin-bottom: 20px;
-  /* Los estilos de borde, color, etc., se heredan de styles.css o puedes definirlos aquí */
+  width: 100%; 
+  border-collapse: collapse; /* Para que los bordes se vean bien */
+  background-color: #e8f5e9; /* Un verde más claro para el fondo de la tabla */
+  color: #333; /* Texto oscuro para la tabla */
+  border-radius: 0 0 4px 4px;
 }
 
-/* Puedes mantener los estilos de th, td, thead de styles.css
-   o personalizarlos aquí si es necesario */
+th, td {
+  border: 1px solid #a5d6a7; /* Bordes sutiles verdes */
+  padding: 8px;
+  text-align: left;
+}
 
+thead {
+  background-color: #2e7d32; /* Verde más oscuro para encabezados */
+  color: white;
+}
+
+/* Estilos para el Fixture estilo Promiedos */
+.fixture-promiedos-container {
+  width: 90%;
+  max-width: 400px; /* Ancho similar al de la imagen de referencia */
+  background-color: #2E343A; /* Color de fondo oscuro del contenedor del fixture */
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  color: #fff; /* Texto blanco por defecto dentro del fixture */
+}
+
+.header-fixture {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.header-fixture h2 {
+  font-size: 1.5em;
+  margin: 0 0 10px 0;
+  color: #fff;
+}
+
+.navegacion-fecha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1D2024; /* Fondo para la barra de navegación de fecha */
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 1.1em;
+}
+
+.navegacion-fecha button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.navegacion-fecha button:disabled {
+  color: #666;
+  cursor: not-allowed;
+}
+
+.partidos-dia-container {
+  /* No necesita estilos especiales si los partidos se apilan verticalmente */
+}
+
+.partido-promiedos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5px;
+  border-bottom: 1px solid #4A5056; /* Separador entre partidos */
+  font-size: 0.9em;
+}
+
+.partido-promiedos:last-child {
+  border-bottom: none;
+}
+
+.estado-partido {
+  flex-basis: 15%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.equipo-local, .equipo-visitante {
+  flex-basis: 35%; /* Ajusta según sea necesario */
+  text-align: center; /* O left/right si prefieres alinear los nombres */
+}
+
+.resultado {
+  flex-basis: 15%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.interzonal-highlight {
+  background-color: #3a3f44; /* Un ligero destaque para el interzonal */
+  /* Podrías añadir más estilos para destacarlo, como un borde diferente */
+}
+
+/* Ajustes generales para botones si no están en .controles */
 button {
-  /* Los estilos del botón se heredan de styles.css
-     o puedes personalizarlos aquí */
-  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  margin: 5px; /* Margen general para botones */
+}
+
+button:hover {
+  background-color: #555;
+}
+
+button:disabled {
+  background-color: #222;
+  color: #777;
+  cursor: not-allowed;
 }

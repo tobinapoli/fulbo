@@ -12,42 +12,52 @@ export interface Posicion {
   providedIn: 'root'
 })
 export class TablaPosicionesService {
-  private _posiciones: Posicion[] = [];
+  private posiciones: { zonaA: Posicion[], zonaB: Posicion[] } = { zonaA: [], zonaB: [] };
+  private equiposOriginales: { zonaA: string[], zonaB: string[] };
 
   constructor() {
-    this.iniciarTablaPosiciones();
+    // Nombres de los 15 equipos para Zona A y Zona B
+    const equiposZonaAInit = [
+      "River Plate", "Independiente", "Gimnasia LP", "Rosario Central", "Huracán",
+      "Colón", "Vélez Sarsfield", "Dep. Riestra", "Instituto", "Barracas Central",
+      "Argentinos Juniors", "Talleres (C)", "Ind. Rivadavia (M)", "Banfield", "Atlético Tucumán"
+    ];
+    const equiposZonaBInit = [
+      "Racing Club", "Boca Juniors", "Estudiantes LP", "Newell's Old Boys", "San Lorenzo",
+      "Godoy Cruz", "Platense", "Defensa y Justicia", "Central Córdoba (SdE)", "Lanús",
+      "Belgrano (C)", "Sarmiento (J)", "Unión (SF)", "Tigre", "Gimnasia (M)" // Asumiendo Gimnasia de Mendoza para completar 15
+    ];
+
+    this.equiposOriginales = { zonaA: equiposZonaAInit, zonaB: equiposZonaBInit };
+    this.inicializarPosiciones();
   }
 
-  private iniciarTablaPosiciones(): void {
-    this._posiciones = [];
-    EQUIPOS_ZONA_A.forEach(equipoObj => { // <--- equipoObj es ahora un objeto Equipo
-      this._posiciones.push({ equipo: equipoObj, puntos: 0, zona: 'A' });
-    });
-    EQUIPOS_ZONA_B.forEach(equipoObj => { // <--- equipoObj es ahora un objeto Equipo
-      this._posiciones.push({ equipo: equipoObj, puntos: 0, zona: 'B' });
-    });
+  private inicializarPosiciones(): void {
+    this.posiciones.zonaA = this.equiposOriginales.zonaA.map((nombre, index) => ({
+      equipo: { id: index + 1, nombre: nombre }, // ID numérico simple basado en el índice
+      puntos: 0,
+      zona: 'A'
+    }));
+    this.posiciones.zonaB = this.equiposOriginales.zonaB.map((nombre, index) => ({
+      equipo: { id: index + 1 + this.equiposOriginales.zonaA.length, nombre: nombre }, // ID numérico, continuando desde Zona A
+      puntos: 0,
+      zona: 'B'
+    }));
     this.ordenarTabla();
   }
 
   private ordenarTabla(): void {
-    this._posiciones.sort((a, b) => {
-      if (b.puntos !== a.puntos) {
-        return b.puntos - a.puntos;
-      }
-      return a.equipo.nombre.localeCompare(b.equipo.nombre); // <--- Comparar por nombre del objeto Equipo
-    });
+    this.posiciones.zonaA.sort((a, b) => b.puntos - a.puntos || a.equipo.nombre.localeCompare(b.equipo.nombre));
+    this.posiciones.zonaB.sort((a, b) => b.puntos - a.puntos || a.equipo.nombre.localeCompare(b.equipo.nombre));
   }
 
   getPosiciones(): { zonaA: Posicion[], zonaB: Posicion[] } {
     this.ordenarTabla(); 
-    return {
-      zonaA: this._posiciones.filter(p => p.zona === 'A'),
-      zonaB: this._posiciones.filter(p => p.zona === 'B')
-    };
+    return this.posiciones;
   }
 
   sumarPuntos(equipoNombre: string, puntos: number): void { // <--- Renombrado parámetro para claridad
-    const posicion = this._posiciones.find(pos => pos.equipo.nombre.toLowerCase() === equipoNombre.toLowerCase()); // <--- Buscar por nombre del objeto Equipo
+    const posicion = [...this.posiciones.zonaA, ...this.posiciones.zonaB].find(pos => pos.equipo.nombre.toLowerCase() === equipoNombre.toLowerCase()); // <--- Buscar por nombre del objeto Equipo
     if (posicion) {
       posicion.puntos += puntos;
       this.ordenarTabla(); 
@@ -57,14 +67,14 @@ export class TablaPosicionesService {
   }
 
   resetearTabla(): void {
-    this._posiciones.forEach(pos => pos.puntos = 0);
-    this.ordenarTabla(); 
+    this.inicializarPosiciones();
   }
 
   getAllNombresEquipos(): string[] {
-    // Mapear los objetos Equipo a sus nombres
-    const nombresZonaA = EQUIPOS_ZONA_A.map(equipo => equipo.nombre);
-    const nombresZonaB = EQUIPOS_ZONA_B.map(equipo => equipo.nombre);
-    return [...nombresZonaA, ...nombresZonaB].sort((a,b) => a.localeCompare(b));
+    return [...this.equiposOriginales.zonaA, ...this.equiposOriginales.zonaB];
+  }
+
+  getNombresEquiposPorZona(zona: 'A' | 'B'): string[] {
+    return zona === 'A' ? [...this.equiposOriginales.zonaA] : [...this.equiposOriginales.zonaB];
   }
 }
