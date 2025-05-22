@@ -1,33 +1,53 @@
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
     <div class="tabla-container">
         <h2>Tabla de Posiciones</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Equipo</th>
-                    <th>Puntos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let posicion of posiciones">
-                    <td>{{ posicion.equipo }}</td>
-                    <td>{{ posicion.puntos }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <button (click)="resetearTabla()">Resetear Puntos</button>
-    </div>
 
-    <div class="sumar-puntos-container" style="margin-top: 20px;">
-        <h3>Sumar Puntos a un Equipo</h3>
-        <div>
-            <label for="equipoInput">Equipo: </label>
-            <input type="text" id="equipoInput" [(ngModel)]="equipoParaSumarPuntos" placeholder="Nombre del equipo">
+        <div class="controles">
+            <select [(ngModel)]="equipoParaSumarPuntos">
+                <option value="" disabled>Selecciona un equipo</option>
+                <option *ngFor="let equipo of equiposArgentinosDisponibles" [value]="equipo">{{ equipo }}</option>
+            </select>
+            <input type="number" [(ngModel)]="cantidadPuntos" placeholder="Puntos">
+            <button (click)="aplicarPuntosDesdeInput()">Sumar Puntos</button>
+            <button (click)="resetearTabla()">Resetear Tabla</button>
         </div>
-        <div style="margin-top: 10px;">
-            <label for="puntosInput">Puntos: </label>
-            <input type="number" id="puntosInput" [(ngModel)]="cantidadPuntos">
+
+        <div class="zonas-container">
+            <div class="zona">
+                <h3>Zona A</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pos of posicionesZonaA">
+                            <td>{{ pos.equipo }}</td>
+                            <td>{{ pos.puntos }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="zona">
+                <h3>Zona B</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pos of posicionesZonaB">
+                            <td>{{ pos.equipo }}</td>
+                            <td>{{ pos.puntos }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <button (click)="aplicarPuntosDesdeInput()" style="margin-top: 10px;">Aplicar Puntos</button>
     </div>
 </div>
